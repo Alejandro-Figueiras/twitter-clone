@@ -7,6 +7,6 @@ module.exports = {
 				}
 				return command
 			},
-			"prettier --write"
+			// "prettier --write"
 		]
 }

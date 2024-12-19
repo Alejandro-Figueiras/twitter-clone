@@ -8,7 +8,7 @@ body {
 }
 
 .banner-img {
-  background-image: url("/twitter_banner.avif");
+  background-image: url('/twitter_banner.avif');
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;

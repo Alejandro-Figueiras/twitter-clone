@@ -7,8 +7,7 @@ export const trySignInGithub = async () => {
 }
 
 export const trySignInGoogle = async () => {
-  // await signIn("google")
-  // TODO later
+  await signIn('google')
 }
 
 export const trySignOut = async () => {

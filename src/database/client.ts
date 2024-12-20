@@ -8,4 +8,27 @@ const libsql = createClient({
 })
 
 const adapter = new PrismaLibSQL(libsql)
-export const prisma = new PrismaClient({ adapter })
+export const prisma = new PrismaClient({ adapter }).$extends({
+  query: {
+    $allModels: {
+      async $allOperations({
+        operation,
+        args,
+        query
+      }: {
+        operation: 'create' | 'update' | 'delete' | 'findMany' | 'findUnique'
+        args: string
+        query: (args: string) => Promise<string>
+      }) {
+        const result = await query(args)
+
+        // Synchronize the embedded replica after any write operation
+        if (['create', 'update', 'delete'].includes(operation)) {
+          await libsql.sync()
+        }
+
+        return result
+      }
+    }
+  }
+})

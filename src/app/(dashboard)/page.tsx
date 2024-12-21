@@ -4,7 +4,7 @@ import { auth } from '@/auth'
 export default async function Home() {
   const session = await auth()
   return (
-    <div className='h-svh w-full bg-black'>
+    <div className='w-full'>
       <h1 className='p-8 text-center text-lg font-semibold'>Hola Buenas!!</h1>
 
       <div className='flex flex-col items-center gap-4 p-4'>
@@ -20,6 +20,61 @@ export default async function Home() {
         <button onClick={trySignOut} className='border-2 border-red-500'>
           Cerrar Sesión
         </button>
+        <p>Buttons</p>
+        <p>Buttons</p>
+        <p>Buttons</p>
+        <p>Buttons</p>
+        <p>Buttons</p>
+        <p>Buttons</p>
+        <p>Buttons</p>
+        <p>Buttons</p>
+        <p>Buttons</p>
+        <p>Buttons</p>
+        <p>Buttons</p>
+        <p>Buttons</p>
+        <p>Buttons</p>
+        <p>Buttons</p>
+        <p>Buttons</p>
+        <p>Buttons</p>
+        <p>Buttons</p>
+        <p>Buttons</p>
+        <p>Buttons</p>
+        <p>Buttons</p>
+        <p>Buttons</p>
+        <p>Buttons</p>
+        <p>Buttons</p>
+        <p>Buttons</p>
+        <p>Buttons</p>
+        <p>Buttons</p>
+        <p>Buttons</p>
+        <p>Buttons</p>
+        <p>Buttons</p>
+        <p>Buttons</p>
+        <p>Buttons</p>
+        <p>Buttons</p>
+        <p>Buttons</p>
+        <p>Buttons</p>
+        <p>Buttons</p>
+        <p>Buttons</p>
+        <p>Buttons</p>
+        <p>Buttons</p>
+        <p>Buttons</p>
+        <p>Buttons</p>
+        <p>Buttons</p>
+        <p>Buttons</p>
+        <p>Buttons</p>
+        <p>Buttons</p>
+        <p>Buttons</p>
+        <p>Buttons</p>
+        <p>Buttons</p>
+        <p>Buttons</p>
+        <p>Buttons</p>
+        <p>Buttons</p>
+        <p>Buttons</p>
+        <p>Buttons</p>
+        <p>Buttons</p>
+        <p>Buttons</p>
+        <p>Buttons</p>
       </div>
     </div>
   )

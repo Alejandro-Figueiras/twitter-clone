@@ -11,3 +11,12 @@ datasource db {
   url      = "file:./dev.db"
 }
 
+model Account {
+  username String @id @unique
+  created_at DateTime @default(now())
+  email String @unique
+  name String
+  photo String
+  banner String
+  description String @default("Hola, estoy usando el mejor clon de Twitter de la historia!")
+}

@@ -18,7 +18,7 @@ const MainDashboardLayout = async ({ children }: { children: ReactNode[] }) => {
       </div>
       <div className='min-w-[600px]'>{children}</div>
       <div className='w-full border-l border-l-muted-foreground'>
-        <div className='p-4'>Hola</div>
+        <div className='fixed h-svh p-4'>Hola</div>
       </div>
     </div>
   )

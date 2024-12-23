@@ -12,9 +12,19 @@ import {
   DropdownMenuItem
 } from '../ui/dropdown-menu'
 import { trySignOut } from '@/actions/auth/authHandlers'
+import { redirect } from 'next/navigation'
+import { prisma } from '@/database/client'
 
 const NavigationSidebar = async () => {
   const session = await auth()
+  const user = await prisma.account.findUnique({
+    where: {
+      email: session?.user?.email as string
+    }
+  })
+  if (!user) {
+    redirect('/new')
+  }
 
   return (
     <section className='flex h-svh flex-col justify-between p-4'>

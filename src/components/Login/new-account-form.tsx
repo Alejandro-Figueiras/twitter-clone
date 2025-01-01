@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-import { toast } from '@/hooks/use-toast'
+import { useToast } from '@/hooks/use-toast'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -44,6 +44,7 @@ const NewAccountForm = () => {
       description: ''
     }
   })
+  const { toast } = useToast()
 
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
     console.log(data)

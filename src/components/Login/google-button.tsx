@@ -1,4 +1,4 @@
-import { trySignInGoogle } from '@/actions/auth/authHandlers'
+import { trySignInGoogle } from '@/actions/auth/auth-handlers'
 
 const GoogleButton = () => {
   return (

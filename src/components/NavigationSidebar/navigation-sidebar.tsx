@@ -11,7 +11,7 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem
 } from '../ui/dropdown-menu'
-import { trySignOut } from '@/actions/auth/authHandlers'
+import { trySignOut } from '@/actions/auth/auth-handlers'
 import { redirect } from 'next/navigation'
 import { prisma } from '@/database/client'
 

@@ -1,4 +1,4 @@
-import { trySignOut } from '@/actions/auth/authHandlers'
+import { trySignOut } from '@/actions/auth/auth-handlers'
 import { auth } from '@/auth'
 
 export default async function Home() {

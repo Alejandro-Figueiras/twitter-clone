@@ -1,4 +1,4 @@
-import { trySignInGithub } from '@/actions/auth/authHandlers'
+import { trySignInGithub } from '@/actions/auth/auth-handlers'
 import React from 'react'
 
 const GithubButton = () => {

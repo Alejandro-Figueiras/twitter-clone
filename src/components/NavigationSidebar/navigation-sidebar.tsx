@@ -1,7 +1,6 @@
 import React, { ReactElement } from 'react'
 import TwitterIcon from '../Icons/twitter-icon'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
-import { auth } from '@/auth'
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -12,20 +11,13 @@ import {
   DropdownMenuItem
 } from '../ui/dropdown-menu'
 import { trySignOut } from '@/actions/auth/auth-handlers'
-import { redirect } from 'next/navigation'
-import { prisma } from '@/database/client'
+import { Account } from '@prisma/client'
 
-const NavigationSidebar = async () => {
-  const session = await auth()
-  const user = await prisma.account.findUnique({
-    where: {
-      email: session?.user?.email as string
-    }
-  })
-  if (!user) {
-    redirect('/new')
-  }
+type NavigationSidebarProps = {
+  account: Account
+}
 
+const NavigationSidebar = async ({ account }: NavigationSidebarProps) => {
   return (
     <section className='flex h-svh flex-col justify-between p-4'>
       <main>
@@ -37,19 +29,28 @@ const NavigationSidebar = async () => {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <NavigationButton>
-              <div className='flex gap-2'>
+              <div className='flex items-center gap-2'>
                 <Avatar>
-                  <AvatarImage src={session?.user?.image as string} />
+                  <AvatarImage src={account.photo as string} />
                   <AvatarFallback className='bg-slate-800'>
-                    {session?.user?.name?.toUpperCase().charAt(0)}
+                    {account.name.toUpperCase().charAt(0)}
                   </AvatarFallback>
                 </Avatar>
                 <div className='text-left'>
-                  <p className='text-md'>{session?.user?.name}</p>
+                  <p className='text-md'>{account.name}</p>
                   <p className='text-xs text-muted-foreground'>
-                    {session?.user?.email}
+                    @{account.username}
                   </p>
                 </div>
+                <svg
+                  width='16'
+                  height='16'
+                  className='rotate-90'
+                  fill='currentColor'
+                  viewBox='0 0 16 16'
+                >
+                  <path d='M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3' />
+                </svg>
               </div>
             </NavigationButton>
           </DropdownMenuTrigger>

@@ -1,28 +1,9 @@
-import { trySignOut } from '@/actions/auth/auth-handlers'
-import { auth } from '@/auth'
 import NavigationSidebar from '@/components/NavigationSidebar/navigation-sidebar'
-import { prisma } from '@/database/client'
-import { redirect } from 'next/navigation'
+import { getAccountServer } from '@/database/get-account-server'
 import { ReactNode } from 'react'
 
 const MainDashboardLayout = async ({ children }: { children: ReactNode[] }) => {
-  const session = await auth()
-  if (!session) {
-    redirect('/login')
-  }
-  if (!session.user?.email) {
-    trySignOut()
-    redirect('/login')
-  }
-
-  const account = await prisma.account.findUnique({
-    where: {
-      email: session.user.email
-    }
-  })
-  if (!account) {
-    redirect('/new')
-  }
+  const account = await getAccountServer()
 
   return (
     <div className='flex'>

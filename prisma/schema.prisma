@@ -1,8 +1,5 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["driverAdapters"]
 }
 
@@ -12,11 +9,11 @@ datasource db {
 }
 
 model Account {
-  username String @id @unique
-  created_at DateTime @default(now())
-  email String @unique
-  name String
-  photo String
-  banner String
-  description String @default("Hola, estoy usando el mejor clon de Twitter de la historia!")
+  username    String   @id @unique
+  createdAt   DateTime @default(now())
+  email       String   @unique
+  name        String
+  photo       String?  
+  banner      String? 
+  description String?
 }

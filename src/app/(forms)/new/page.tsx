@@ -10,8 +10,7 @@ const NewAccountPage = async () => {
   }
 
   return (
-    <div className='m-auto min-h-screen max-w-[600px] border-x p-8'>
-      <h1 className='mb-8 text-2xl font-bold'>Nueva Cuenta</h1>
+    <div className='m-auto min-h-screen max-w-[600px] border-x'>
       <NewAccountForm />
     </div>
   )

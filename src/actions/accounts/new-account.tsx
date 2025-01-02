@@ -46,11 +46,10 @@ export const createNewAccount = async ({
       email: authSession.user?.email,
       username,
       name,
-      description,
+      description: description ?? '',
       photo: '',
       banner: ''
     }
   })
-
   return result
 }

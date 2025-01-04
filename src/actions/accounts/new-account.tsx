@@ -20,7 +20,7 @@ export const createNewAccount = async ({
     throw new Error('Sessión no iniciada')
   }
 
-  const emailExits = await prisma.account.findUnique({
+  const emailExits = await prisma.user.findUnique({
     where: {
       email: authSession.user.email
     }
@@ -41,14 +41,18 @@ export const createNewAccount = async ({
     throw new Error('Username en uso. Por favor elige otro en su lugar')
   }
 
-  const result = await prisma.account.create({
+  const result = await prisma.user.create({
     data: {
       email: authSession.user?.email,
       username,
-      name,
-      description: description ?? '',
-      photo: '',
-      banner: ''
+      account: {
+        create: {
+          name,
+          description: description ?? '',
+          photo: '',
+          banner: ''
+        }
+      }
     }
   })
   return result

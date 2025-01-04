@@ -8,10 +8,16 @@ datasource db {
   url      = "file:./dev.db"
 }
 
+model User {
+  username String   @id @unique
+  email    String   @unique
+  account  Account?
+}
+
 model Account {
   username    String   @id @unique
   createdAt   DateTime @default(now())
-  email       String   @unique
+  user        User     @relation(fields: [username], references: [username])
   name        String
   photo       String?  
   banner      String? 

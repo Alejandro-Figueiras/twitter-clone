@@ -13,13 +13,16 @@ export const getAccountServer = async () => {
     redirect('/login')
   }
 
-  const account = await prisma.account.findUnique({
+  const user = await prisma.user.findUnique({
     where: {
       email: session.user.email
+    },
+    include: {
+      account: true
     }
   })
-  if (!account) {
+  if (!user || !user.account) {
     redirect('/new')
   }
-  return account
+  return user.account
 }

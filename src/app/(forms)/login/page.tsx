@@ -5,7 +5,7 @@ const LoginPage = () => {
   return (
     <div className='m-auto flex flex-col items-center justify-center'>
       <div className='flex flex-col items-center gap-4 p-4'>
-        <img src='/twitter.png' width={60} />
+        <img src='/twitter.png' width={60} alt='Twitter' />
         <h1 className='text-xl font-bold'>Inicia Sesión en Twitter Clone</h1>
         <div className='flex flex-col items-center justify-center'>
           <GoogleButton />

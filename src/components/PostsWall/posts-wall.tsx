@@ -18,6 +18,10 @@ const PostsWall = ({ account }: PostsWallProps) => {
     setPosts(posts)
   }
 
+  const reloadPosts = async () => {
+    await loadPosts()
+  }
+
   useEffect(() => {
     loadPosts()
   }, [actualTab])
@@ -25,8 +29,10 @@ const PostsWall = ({ account }: PostsWallProps) => {
   return (
     <div>
       <WallTabs wallType={actualTab} setActualTab={setActualTab} />
-      <PostForm account={account} />
-      {JSON.stringify(posts, null, 2)}
+      <PostForm account={account} reloadPosts={reloadPosts} />
+      <pre className='p-4'>
+        <code>{JSON.stringify(posts, null, 2)}</code>
+      </pre>
     </div>
   )
 }

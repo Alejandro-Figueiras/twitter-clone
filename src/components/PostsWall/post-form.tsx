@@ -1,15 +1,37 @@
 'use client'
 import { Account } from '@prisma/client'
-import React from 'react'
+import React, { useState } from 'react'
 import AccountAvatar from '../NavigationSidebar/Avatar/account-avatar'
 import { Textarea } from '../ui/textarea'
 import { Button } from '../ui/button'
+import { newPost } from '@/actions/posts/post'
+import { useToast } from '@/hooks/use-toast'
 
 type PostFormProps = {
   account: Account
+  reloadPosts?: () => Promise<void>
 }
 
-const PostForm = ({ account }: PostFormProps) => {
+const PostForm = ({ account, reloadPosts }: PostFormProps) => {
+  const [text, setText] = useState<string>('')
+  const { toast } = useToast()
+
+  const submitPost = async () => {
+    if (text.length) {
+      newPost({ text })
+        .then(() => {
+          setText('')
+          if (reloadPosts) reloadPosts()
+        })
+        .catch((e: Error) => {
+          toast({
+            title: 'Error al postear el tweet',
+            description: e.message
+          })
+        })
+    }
+  }
+
   return (
     <div className='flex w-full gap-4 border-b border-muted px-4 pb-2 pt-4'>
       <AccountAvatar account={account} />
@@ -19,12 +41,20 @@ const PostForm = ({ account }: PostFormProps) => {
           onInput={(e) => {
             e.currentTarget.style.height = 'auto'
             e.currentTarget.style.height = e.currentTarget.scrollHeight + 'px'
+            setText(e.currentTarget.value)
           }}
+          value={text}
           placeholder='¡¿Qué está pasando?!'
         />
         <div className='flex justify-between'>
           <div></div>
-          <Button className='rounded-full'>Postear</Button>
+          <Button
+            className='rounded-full'
+            disabled={text.length <= 0}
+            onClick={submitPost}
+          >
+            Postear
+          </Button>
         </div>
       </div>
     </div>

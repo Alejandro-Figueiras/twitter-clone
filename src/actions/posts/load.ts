@@ -8,6 +8,9 @@ export const loadForYou = async ({ page = 0 }) => {
     take: LIMIT,
     include: {
       authorAccount: true
+    },
+    orderBy: {
+      createAt: 'desc'
     }
   })
   return posts

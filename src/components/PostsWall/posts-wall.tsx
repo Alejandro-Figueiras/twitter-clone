@@ -4,6 +4,8 @@ import React, { useEffect, useState } from 'react'
 import WallTabs, { WallTypes } from './wall-tabs'
 import PostForm from './post-form'
 import { loadForYou } from '@/actions/posts/load'
+import PostCard from './post-card'
+import { Loader2 } from 'lucide-react'
 
 type PostsWallProps = {
   account: Account
@@ -11,11 +13,14 @@ type PostsWallProps = {
 
 const PostsWall = ({ account }: PostsWallProps) => {
   const [actualTab, setActualTab] = useState<WallTypes>(WallTypes.forYou)
-  const [posts, setPosts] = useState<Post[]>([])
+  const [posts, setPosts] = useState<(Post & { authorAccount: Account })[]>([])
+  const [loading, setLoading] = useState(true)
 
   const loadPosts = async () => {
+    setLoading(true)
     const posts = await loadForYou({ page: 0 })
     setPosts(posts)
+    setLoading(false)
   }
 
   const reloadPosts = async () => {
@@ -30,9 +35,14 @@ const PostsWall = ({ account }: PostsWallProps) => {
     <div>
       <WallTabs wallType={actualTab} setActualTab={setActualTab} />
       <PostForm account={account} reloadPosts={reloadPosts} />
-      <pre className='p-4'>
-        <code>{JSON.stringify(posts, null, 2)}</code>
-      </pre>
+      {posts.map((post) => (
+        <PostCard post={post} key={post.id} />
+      ))}
+      {loading && (
+        <div className='flex w-full justify-center p-8'>
+          <Loader2 className='animate-spin' width={40} height={40} />
+        </div>
+      )}
     </div>
   )
 }

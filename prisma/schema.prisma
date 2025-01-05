@@ -22,4 +22,13 @@ model Account {
   photo       String?  
   banner      String? 
   description String?
+  posts       Post[]   @relation("authorRelation")
+}
+
+model Post {
+  id String @id @unique
+  createAt DateTime @default(now())
+  author String
+  authorAccount Account @relation("authorRelation", fields: [author], references: [username])
+  text String
 }

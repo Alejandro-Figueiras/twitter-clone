@@ -9,7 +9,6 @@ type AccountContextTypes = {
 export const AccountContext = createContext<AccountContextTypes>({
   account: {
     name: 'Loading',
-    email: 'loading',
     username: 'loading',
     createdAt: new Date(),
     banner: '',

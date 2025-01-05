@@ -53,6 +53,9 @@ export const createNewAccount = async ({
           banner: ''
         }
       }
+    },
+    include: {
+      account: true
     }
   })
   return result

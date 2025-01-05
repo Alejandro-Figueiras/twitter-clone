@@ -61,7 +61,7 @@ const NewAccountForm = () => {
       description: data.description
     })
       .then((result) => {
-        setNombre(result.name)
+        setNombre(result.account?.name ?? 'usuario')
         setWelcomeView(true)
         console.log(result)
       })

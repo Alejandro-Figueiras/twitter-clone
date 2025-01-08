@@ -19,16 +19,26 @@ model Account {
   createdAt   DateTime @default(now())
   user        User     @relation(fields: [username], references: [username])
   name        String
-  photo       String?  
-  banner      String? 
+  photo       String?
+  banner      String?
   description String?
   posts       Post[]   @relation("authorRelation")
 }
 
 model Post {
-  id String @id @unique
+  id             String   @id @unique
+  createAt       DateTime @default(now())
+  author         String
+  authorAccount  Account  @relation("authorRelation", fields: [author], references: [username])
+  text           String
+  likes          Like[]   @relation("postLikes")
+}
+
+model Like {
+  postId   String
+  username String
+  post     Post     @relation("postLikes", fields: [postId], references: [id])
   createAt DateTime @default(now())
-  author String
-  authorAccount Account @relation("authorRelation", fields: [author], references: [username])
-  text String
+
+  @@id([postId, username])
 }

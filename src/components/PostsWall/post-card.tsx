@@ -1,12 +1,12 @@
 'use client'
-import { Account, Post } from '@prisma/client'
 import React from 'react'
 import AccountAvatar from '../NavigationSidebar/Avatar/account-avatar'
 import { Button } from '../ui/button'
 import { Heart, MessageCircle, Repeat2 } from 'lucide-react'
+import { PostLoaded } from './posts-wall'
 
 type PostCardProps = {
-  post: Post & { authorAccount: Account }
+  post: PostLoaded
 }
 
 const PostCard = ({ post }: PostCardProps) => {
@@ -34,11 +34,9 @@ const PostCard = ({ post }: PostCardProps) => {
           >
             <Repeat2 />
           </Button>
-          <Button
-            variant='ghost'
-            className='aspect-square rounded-full p-2 py-2'
-          >
+          <Button variant='ghost' className='aspect-square rounded-xl p-2 py-2'>
             <Heart />
+            {post._count.likes}
           </Button>
         </div>
       </div>

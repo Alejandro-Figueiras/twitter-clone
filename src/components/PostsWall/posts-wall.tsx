@@ -7,13 +7,20 @@ import { loadForYou } from '@/actions/posts/load'
 import PostCard from './post-card'
 import { Loader2 } from 'lucide-react'
 
-type PostsWallProps = {
+export type PostsWallProps = {
   account: Account
+}
+
+export type PostLoaded = Post & {
+  authorAccount: Account
+  _count: {
+    likes: number
+  }
 }
 
 const PostsWall = ({ account }: PostsWallProps) => {
   const [actualTab, setActualTab] = useState<WallTypes>(WallTypes.forYou)
-  const [posts, setPosts] = useState<(Post & { authorAccount: Account })[]>([])
+  const [posts, setPosts] = useState<PostLoaded[]>([])
   const [loading, setLoading] = useState(true)
 
   const loadPosts = async () => {

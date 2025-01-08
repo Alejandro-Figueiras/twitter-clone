@@ -7,6 +7,9 @@ export const loadForYou = async ({ page = 0 }) => {
     skip: page * LIMIT,
     take: LIMIT,
     include: {
+      _count: {
+        select: { likes: true }
+      },
       authorAccount: true
     },
     orderBy: {

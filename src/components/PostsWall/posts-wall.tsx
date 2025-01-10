@@ -1,6 +1,6 @@
 'use client'
 import { Account, Post } from '@prisma/client'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import WallTabs, { WallTypes } from './wall-tabs'
 import PostForm from './post-form'
 import { loadForYou } from '@/actions/posts/load'
@@ -16,6 +16,11 @@ export type PostLoaded = Post & {
   _count: {
     likes: number
   }
+  likes: {
+    createAt: Date
+    username: string
+    postId: string
+  }[]
 }
 
 const PostsWall = ({ account }: PostsWallProps) => {
@@ -23,12 +28,12 @@ const PostsWall = ({ account }: PostsWallProps) => {
   const [posts, setPosts] = useState<PostLoaded[]>([])
   const [loading, setLoading] = useState(true)
 
-  const loadPosts = async () => {
+  const loadPosts = useCallback(async () => {
     setLoading(true)
-    const posts = await loadForYou({ page: 0 })
+    const posts = await loadForYou({ page: 0, username: account.username })
     setPosts(posts)
     setLoading(false)
-  }
+  }, [account.username])
 
   const reloadPosts = async () => {
     await loadPosts()
@@ -36,14 +41,18 @@ const PostsWall = ({ account }: PostsWallProps) => {
 
   useEffect(() => {
     loadPosts()
-  }, [actualTab])
+  }, [actualTab, loadPosts])
 
   return (
     <div>
       <WallTabs wallType={actualTab} setActualTab={setActualTab} />
       <PostForm account={account} reloadPosts={reloadPosts} />
       {posts.map((post) => (
-        <PostCard post={post} key={post.id} />
+        <PostCard
+          post={post}
+          key={post.id}
+          accountUsername={account.username}
+        />
       ))}
       {loading && (
         <div className='flex w-full justify-center p-8'>

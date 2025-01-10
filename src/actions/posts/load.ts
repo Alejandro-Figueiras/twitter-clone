@@ -2,7 +2,7 @@
 import { prisma } from '@/database/client'
 const LIMIT = 20
 
-export const loadForYou = async ({ page = 0 }) => {
+export const loadForYou = async ({ page = 0, username = '' }) => {
   const posts = await prisma.post.findMany({
     skip: page * LIMIT,
     take: LIMIT,
@@ -10,7 +10,12 @@ export const loadForYou = async ({ page = 0 }) => {
       _count: {
         select: { likes: true }
       },
-      authorAccount: true
+      authorAccount: true,
+      likes: {
+        where: {
+          username
+        }
+      }
     },
     orderBy: {
       createAt: 'desc'

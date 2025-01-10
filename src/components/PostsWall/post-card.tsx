@@ -4,12 +4,16 @@ import AccountAvatar from '../NavigationSidebar/Avatar/account-avatar'
 import { Button } from '../ui/button'
 import { Heart, MessageCircle, Repeat2 } from 'lucide-react'
 import { PostLoaded } from './posts-wall'
+import { getHoraRelativa } from '@/helpers/time'
+import { usePost } from '@/hooks/use-post'
 
 type PostCardProps = {
   post: PostLoaded
+  accountUsername: string
 }
 
-const PostCard = ({ post }: PostCardProps) => {
+const PostCard = ({ post, accountUsername }: PostCardProps) => {
+  const { liked, toggleLike, includeLike } = usePost(post, accountUsername)
   return (
     <div className='flex w-full gap-4 border-b border-muted px-4 pb-2 pt-4'>
       <AccountAvatar account={post.authorAccount} />
@@ -34,59 +38,22 @@ const PostCard = ({ post }: PostCardProps) => {
           >
             <Repeat2 />
           </Button>
-          <Button variant='ghost' className='aspect-square rounded-xl p-2 py-2'>
-            <Heart />
-            {post._count.likes}
+          <Button
+            variant='ghost'
+            className='aspect-square rounded-xl p-2 py-2'
+            onClick={toggleLike}
+          >
+            {liked ? (
+              <Heart className='fill-red-600 text-red-600' />
+            ) : (
+              <Heart />
+            )}
+            {post._count.likes + includeLike}
           </Button>
         </div>
       </div>
     </div>
   )
-}
-
-const getHoraRelativa = (createdAt: Date) => {
-  const now = new Date()
-  const diferenciaDias = Math.floor(
-    (now.getTime() - createdAt.getTime()) / (1000 * 60 * 60 * 24)
-  )
-  const diferenciaHoras = Math.floor(
-    (now.getTime() - createdAt.getTime()) / (1000 * 60 * 60)
-  )
-
-  if (diferenciaHoras < 24) {
-    const diferenciaMinutos = Math.floor(
-      (now.getTime() - createdAt.getTime()) / (1000 * 60)
-    )
-    if (diferenciaMinutos < 1) {
-      return `${Math.floor((now.getTime() - createdAt.getTime()) / 1000)}s`
-    } else if (diferenciaMinutos < 60) {
-      return `${diferenciaMinutos}min`
-    }
-    return `${diferenciaHoras}h`
-  }
-  if (diferenciaDias == 1) return 'ayer'
-  if (diferenciaDias < 7) {
-    return `${diferenciaDias} días`
-  }
-  const meses = [
-    'Ene',
-    'Feb',
-    'Mar',
-    'Abr',
-    'May',
-    'Jun',
-    'Jul',
-    'Ago',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dic'
-  ]
-  if (diferenciaDias < 365) {
-    return `${meses[createdAt.getMonth()]} ${createdAt.getDate()}`
-  } else {
-    return `${meses[createdAt.getMonth()]} ${createdAt.getDate()}, ${createdAt.getFullYear()}`
-  }
 }
 
 export default PostCard

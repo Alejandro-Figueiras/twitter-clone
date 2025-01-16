@@ -1,13 +1,13 @@
 'use client'
 import { Account } from '@prisma/client'
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import AccountAvatar from '../NavigationSidebar/Avatar/account-avatar'
 import { Textarea } from '../ui/textarea'
 import { Button } from '../ui/button'
 import { newPost } from '@/actions/posts/post'
 import { useToast } from '@/hooks/use-toast'
-import { ImagePlus } from 'lucide-react'
 import { PostImagesContainer } from './post-images'
+import PostImageInput from './post-image-input'
 
 type PostFormProps = {
   account: Account
@@ -16,22 +16,28 @@ type PostFormProps = {
 
 const PostForm = ({ account, reloadPosts }: PostFormProps) => {
   const [text, setText] = useState<string>('')
-  // TODO optimizar renderizado de imágenes de react al agregar una imagen (useEffect con useRef)
-  const [images, setImages] = useState<File[]>([])
-  const imageInput = React.useRef<HTMLInputElement>(null)
+  const images = useRef<File[]>([])
+  const [imagesURL, setImagesURL] = useState<string[]>([])
   const { toast } = useToast()
 
   const removeImage = (index: number) => {
-    const newImages = images.filter((_, i) => i !== index)
-    setImages(newImages)
+    images.current = images.current.filter((_, i) => i !== index)
+    updateURLs()
   }
+
+  const updateURLs = () => {
+    console.log(images.current)
+    setImagesURL(images.current.map((file) => URL.createObjectURL(file)))
+  }
+
+  useEffect(updateURLs, [])
 
   const submitPost = async () => {
     if (text.length) {
-      newPost({ text, images })
+      newPost({ text, images: images.current })
         .then(() => {
           setText('')
-          setImages([])
+          images.current = []
           if (reloadPosts) reloadPosts()
         })
         .catch((e: Error) => {
@@ -57,41 +63,12 @@ const PostForm = ({ account, reloadPosts }: PostFormProps) => {
           value={text}
           placeholder='¡¿Qué está pasando?!'
         />
-        {images.length > 0 && (
-          <PostImagesContainer
-            images={images.map((img) => URL.createObjectURL(img))}
-            removeImage={removeImage}
-          />
+        {images.current.length > 0 && (
+          <PostImagesContainer images={imagesURL} removeImage={removeImage} />
         )}
         <div className='flex justify-between'>
           <div>
-            <input
-              type='file'
-              accept='image/*'
-              className='hidden'
-              onChange={(e) => {
-                if (e.target.files && e.target.files[0]) {
-                  const file = e.target.files[0]
-                  if (
-                    images.length < 2 &&
-                    images.findIndex((img) => img.name === file.name) === -1
-                  ) {
-                    setImages([...images, file])
-                  }
-                  if (imageInput.current) {
-                    imageInput.current.value = ''
-                  }
-                }
-              }}
-              ref={imageInput}
-            />
-            <Button
-              variant='outline'
-              size='icon'
-              onClick={() => imageInput.current?.click()}
-            >
-              <ImagePlus />
-            </Button>
+            <PostImageInput images={images} updateURLs={updateURLs} />
           </div>
           <Button
             className='rounded-full'

@@ -26,7 +26,7 @@ const PostForm = ({ account, reloadPosts }: PostFormProps) => {
 
   const submitPost = async () => {
     if (text.length) {
-      newPost({ text })
+      newPost({ text, images })
         .then(() => {
           setText('')
           if (reloadPosts) reloadPosts()

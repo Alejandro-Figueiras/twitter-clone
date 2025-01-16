@@ -32,6 +32,16 @@ model Post {
   authorAccount  Account  @relation("authorRelation", fields: [author], references: [username])
   text           String
   likes          Like[]   @relation("postLikes")
+  images         PostImage[] @relation("postImages")
+}
+
+model PostImage {
+  id      String   @id @unique
+  fileId  String
+  postId  String
+  post    Post     @relation("postImages", fields: [postId], references: [id])
+  url     String
+  createAt DateTime @default(now())
 }
 
 model Like {

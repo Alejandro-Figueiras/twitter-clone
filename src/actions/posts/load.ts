@@ -15,7 +15,8 @@ export const loadForYou = async ({ page = 0, username = '' }) => {
         where: {
           username
         }
-      }
+      },
+      images: true
     },
     orderBy: {
       createAt: 'desc'

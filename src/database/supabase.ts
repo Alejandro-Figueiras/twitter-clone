@@ -1,4 +1,3 @@
-'use server'
 // Supabase es usado por el momento solo para Storage, como alternativa directa a S3
 import { createClient } from '@supabase/supabase-js'
 

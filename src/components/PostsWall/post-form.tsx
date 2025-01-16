@@ -6,7 +6,8 @@ import { Textarea } from '../ui/textarea'
 import { Button } from '../ui/button'
 import { newPost } from '@/actions/posts/post'
 import { useToast } from '@/hooks/use-toast'
-import { ImagePlus, XIcon } from 'lucide-react'
+import { ImagePlus } from 'lucide-react'
+import { PostImagesContainer } from './post-images'
 
 type PostFormProps = {
   account: Account
@@ -15,6 +16,7 @@ type PostFormProps = {
 
 const PostForm = ({ account, reloadPosts }: PostFormProps) => {
   const [text, setText] = useState<string>('')
+  // TODO optimizar renderizado de imágenes de react al agregar una imagen (useEffect con useRef)
   const [images, setImages] = useState<File[]>([])
   const imageInput = React.useRef<HTMLInputElement>(null)
   const { toast } = useToast()
@@ -29,6 +31,7 @@ const PostForm = ({ account, reloadPosts }: PostFormProps) => {
       newPost({ text, images })
         .then(() => {
           setText('')
+          setImages([])
           if (reloadPosts) reloadPosts()
         })
         .catch((e: Error) => {
@@ -55,7 +58,10 @@ const PostForm = ({ account, reloadPosts }: PostFormProps) => {
           placeholder='¡¿Qué está pasando?!'
         />
         {images.length > 0 && (
-          <ImagesContainer images={images} removeImage={removeImage} />
+          <PostImagesContainer
+            images={images.map((img) => URL.createObjectURL(img))}
+            removeImage={removeImage}
+          />
         )}
         <div className='flex justify-between'>
           <div>
@@ -96,48 +102,6 @@ const PostForm = ({ account, reloadPosts }: PostFormProps) => {
           </Button>
         </div>
       </div>
-    </div>
-  )
-}
-
-type ImageItemProps = {
-  image: File
-  index: number
-  removeImage: (index: number) => void
-}
-
-const ImageItem: React.FC<ImageItemProps> = ({ image, index, removeImage }) => {
-  return (
-    <div className='relative w-full'>
-      <img src={URL.createObjectURL(image)} alt='post' className='rounded-md' />
-      <Button
-        className='absolute right-0 top-0'
-        variant='outline'
-        size='icon'
-        onClick={() => removeImage(index)}
-      >
-        <XIcon />
-      </Button>
-    </div>
-  )
-}
-
-const ImagesContainer: React.FC<{
-  images: File[]
-  removeImage: (index: number) => void
-}> = ({ images, removeImage }) => {
-  return (
-    <div
-      className={`grid w-full gap-2 pb-2 ${images.length === 1 ? 'grid-cols-1' : 'grid-cols-2'} `}
-    >
-      {images.map((image, index) => (
-        <ImageItem
-          key={index}
-          image={image}
-          index={index}
-          removeImage={removeImage}
-        />
-      ))}
     </div>
   )
 }

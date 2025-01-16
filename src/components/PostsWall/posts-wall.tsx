@@ -21,6 +21,11 @@ export type PostLoaded = Post & {
     username: string
     postId: string
   }[]
+  images: {
+    id: string
+    fileId: string
+    url: string
+  }[]
 }
 
 const PostsWall = ({ account }: PostsWallProps) => {

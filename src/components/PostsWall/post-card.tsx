@@ -6,6 +6,7 @@ import { Heart, MessageCircle, Repeat2 } from 'lucide-react'
 import { PostLoaded } from './posts-wall'
 import { getHoraRelativa } from '@/helpers/time'
 import { usePost } from '@/hooks/use-post'
+import { PostImagesContainer } from './post-images'
 
 type PostCardProps = {
   post: PostLoaded
@@ -25,6 +26,7 @@ const PostCard = ({ post, accountUsername }: PostCardProps) => {
           </span>
         </p>
         <p className='text-wrap'>{post.text}</p>
+        <PostImagesContainer images={post.images.map((img) => img.url)} />
         <div className='flex justify-between pt-2'>
           <Button
             variant='ghost'

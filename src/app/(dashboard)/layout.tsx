@@ -12,7 +12,7 @@ const MainDashboardLayout = async ({ children }: { children: ReactNode[] }) => {
           <NavigationSidebar account={account} />
         </div>
       </div>
-      <div className='min-w-[600px]'>{children}</div>
+      <div className='min-w-[600px] max-w-[600px]'>{children}</div>
       <div className='w-full border-l border-l-muted'>
         <div className='fixed h-svh p-4'>Hola</div>
       </div>
